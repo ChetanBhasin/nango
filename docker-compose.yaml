@@ -21,24 +21,25 @@ services:
         container_name: nango-server
         platform: linux/amd64
         environment:
-            - NANGO_ENCRYPTION_KEY
-            - NANGO_DB_USER
-            - NANGO_DB_PASSWORD
+            - NANGO_ENCRYPTION_KEY=xeYfipLqvX4R51+Pus/1/GQ+eFduErWtJsk91batu7k=
+            - NANGO_DB_USER=nango
+            - NANGO_DB_PASSWORD=nango
             - NANGO_DB_HOST=${NANGO_DB_HOST:-nango-db}
-            - NANGO_DB_NAME
-            - NANGO_DB_SSL
+            - NANGO_DB_NAME=nango
+            - NANGO_DB_SSL=false
             - NANGO_DB_ADDITIONAL_SCHEMAS
             - NANGO_DB_POOL_MIN
             - NANGO_DB_POOL_MAX
             - RECORDS_DATABASE_URL=${RECORDS_DATABASE_URL:-postgresql://nango:nango@nango-db:5432/nango}
-            - SERVER_PORT
-            - CSP_REPORT_ONLY=true
+            - SERVER_PORT=3003
+            - CSP_REPORT_ONLY=false
             - NANGO_SERVER_URL=${NANGO_SERVER_URL:-http://localhost:3003}
             - NANGO_PUBLIC_SERVER_URL=${NANGO_PUBLIC_SERVER_URL:-http://localhost:3000}
             - FLAG_AUTH_ENABLED
-            - NANGO_DASHBOARD_USERNAME
-            - NANGO_DASHBOARD_PASSWORD
-            - LOG_LEVEL=${LOG_LEVEL:-info}
+            - NANGO_DASHBOARD_USERNAME=nango
+            - NANGO_DASHBOARD_PASSWORD=nango
+            - LOG_LEVEL=${LOG_LEVEL:-debug}
+            - TELEMETRY
             - NANGO_SERVER_WEBSOCKETS_PATH
             - NANGO_LOGS_ENABLED=${NANGO_LOGS_ENABLED:-false}
             - NANGO_LOGS_ES_URL=${NANGO_LOGS_ES_URL:-http://nango-elasticsearch:9200}
@@ -49,8 +50,9 @@ services:
             - './packages/providers/providers.yaml:/app/nango/packages/providers/providers.yaml'
         restart: always
         ports:
-            - '${SERVER_PORT:-3003}:${SERVER_PORT:-3003}'
-            - '${CONNECT_UI_PORT:-3009}:${CONNECT_UI_PORT:-3009}'
+            - '3003:3003'
+            - '3009:3009'
+            - '8080:8080'
         depends_on:
             - nango-db
             # - nango-elasticsearch
